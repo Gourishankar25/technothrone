@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Techno Throne</string>
+    <string name="team_num">Team Number</string>
+    <string name="passwd">Password</string>
+    <string name="submit">SignUp</string>
 </resources>

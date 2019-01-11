@@ -1,40 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@color/colorAccent"
+    android:layout_margin="24dp"
+    android:layout_gravity="center"
     tools:context="com.example.user.technothrone.MainActivity">
+
 
     <EditText
         android:id="@+id/teamnumber"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/teamPassword"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="18dp"
-        android:hint="number" />
+        android:layout_margin="18dp"
+        android:hint="@string/team_num"
+        android:inputType="number"
+        android:maxLength="2"
+        android:textSize="22sp"
+        android:fontFamily="serif-monospace"
+        android:textAlignment="center"/>
 
     <EditText
         android:id="@+id/teamPassword"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/enterbutton"
-        android:layout_alignLeft="@+id/enterbutton"
-        android:layout_alignStart="@+id/enterbutton"
-        android:layout_marginBottom="33dp"
-        android:hint="password" />
+        android:layout_margin="18dp"
+        android:hint="@string/passwd"
+        android:inputType="textPassword"
+        android:textSize="22sp"
+        android:fontFamily="serif-monospace"
+        android:textAlignment="center"/>
 
     <Button
         android:id="@+id/enterbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="174dp"
-        android:text="ok" />
+        android:text="@string/submit"
+        android:background="@color/submit"
+        android:textColor="#fff"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        android:layout_marginTop="45dp"
+        android:fontFamily="casual"/>
 
-</RelativeLayout>
+</LinearLayout>

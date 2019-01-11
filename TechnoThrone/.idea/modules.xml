@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/TechnoThrone.iml" filepath="$PROJECT_DIR$/TechnoThrone.iml" />
+      <module fileurl="file://F:\Aghamarsh\TechnoThrone\technothrone\TechnoThrone\TechnoThrone.iml" filepath="F:\Aghamarsh\TechnoThrone\technothrone\TechnoThrone\TechnoThrone.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://F:\Aghamarsh\TechnoThrone\technothrone\TechnoThrone\app\app.iml" filepath="F:\Aghamarsh\TechnoThrone\technothrone\TechnoThrone\app\app.iml" />
     </modules>
   </component>
 </project>
