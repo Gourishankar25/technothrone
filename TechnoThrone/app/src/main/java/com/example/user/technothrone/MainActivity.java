@@ -35,11 +35,11 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 teamNo = teamNumber.getText().toString();
-                if (!teamNo.equals("01")) {
+               /* if (!teamNo.equals("01")) {
                     teamNumber.setError("your kingdom cannot combat with our soliders");
                     teamNumber.requestFocus();
                     return;
-                } else {
+                } else {*/
 
                     check=FirebaseDatabase.getInstance().getReference().child("user").child(teamNo).child("status");
 
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                                         if (passWord.equals(pass)) {
 
                                             Toast.makeText(MainActivity.this, "my lord tech throne kingdom invites you", Toast.LENGTH_SHORT).show();
-                                            check.setValue("true");
+                                           // check.setValue("true");
                                             Intent i =new Intent(MainActivity.this,questionPage.class);
                                             i.putExtra("teamNo",teamNo);
                                             startActivity(i);
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                 }
-            }
+
         });
 
 
