@@ -1,6 +1,14 @@
 <resources>
-    <string name="app_name">Techno Throne</string>
+    <string name="app_name">TechnoThrone</string>
     <string name="team_num">Team Number</string>
     <string name="passwd">Password</string>
-    <string name="submit">SignUp</string>
+    <string name="submit">Sign Up</string>
+    <string name="infinity">Infinity 2k19</string>
+    <string name="bal">Current Balance :</string>
+    <string name="pos">Current Position :</string>
+    <string name="btn">Submit</string>
+    <string name="bid">BID AMOUNT</string>
+    <string name="timer">Time Left :</string>
+    <string name="power">Powered By : </string>
+    <string name="cse">Dept. of Computer Science Engineering </string>
 </resources>
