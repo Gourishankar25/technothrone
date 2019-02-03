@@ -31,13 +31,18 @@ public class questionPage extends AppCompatActivity {
     TextView optionB;
     TextView optionC;
     TextView optionD;
+    TextView balance;
+    TextView currentPosition;
     EditText Bid;
     private RadioGroup mFirstGroup;
     private RadioGroup mSecondGroup;
 
+    int Balance = 3000;
+    int Position = 1;
+
     String Option ="";
     int selected = 0;
-    String bidAmnt = "";
+    int bidAmnt;
     private boolean isChecking = true;
     private int mCheckedId = R.id.optiona;
 
@@ -57,8 +62,13 @@ public class questionPage extends AppCompatActivity {
         optionD=findViewById(R.id.optiond);
         Bid = findViewById(R.id.bidamt);
 
+        balance = findViewById(R.id.balance);
+        currentPosition = findViewById(R.id.position);
+
         mFirstGroup = (RadioGroup) findViewById(R.id.opt1);
         mSecondGroup = (RadioGroup) findViewById(R.id.opt2);
+
+        loadBalancePosition(Balance,Position);
 
         mFirstGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -92,14 +102,27 @@ public class questionPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final RadioButton btn = findViewById(selected);
-                Option = btn.getText().toString();
-                bidAmnt = Bid.getText().toString();
-                Toast.makeText(questionPage.this,"Option Selected is:"+Option+" The bid Amount is:"+bidAmnt,Toast.LENGTH_SHORT).show();
+
+                if(btn==null)
+                {
+                    Toast.makeText(questionPage.this,"Please select an option",Toast.LENGTH_SHORT).show();
+                }
+                else if(Bid == null)
+                {
+                    Toast.makeText(questionPage.this,"Please select the bid amount",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Option = btn.getText().toString();
+                    String bidamt = Bid.getText().toString();
+                    bidAmnt = Integer.valueOf(bidamt);
+                    bid();
+                }
             }
         });
 
     displayAns= FirebaseDatabase.getInstance().getReference().child("display");
-        displayAns.addValueEventListener(new ValueEventListener() {
+    displayAns.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String qNo = dataSnapshot.getValue().toString();
@@ -193,4 +216,18 @@ public class questionPage extends AppCompatActivity {
         });
 
     }
+
+    void bid()
+    {
+        Balance  = Balance - bidAmnt;
+        loadBalancePosition(Balance,Position);
+        Toast.makeText(questionPage.this,"Option Selected is:"+Option+" The bid Amount is:"+bidAmnt,Toast.LENGTH_SHORT).show();
+    }
+
+    void loadBalancePosition(int bal,int pos)
+    {
+        balance.setText(String.valueOf(bal));
+        currentPosition.setText(String.valueOf(pos));
+    }
+
 }
