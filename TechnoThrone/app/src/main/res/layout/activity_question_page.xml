@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/qbg"
     tools:context="com.example.user.technothrone.questionPage">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/question"
@@ -228,4 +231,7 @@
             android:textColor="@color/fotor"
             android:textSize="32sp"
             android:textStyle="bold" />
+
 </RelativeLayout>
+
+</ScrollView>

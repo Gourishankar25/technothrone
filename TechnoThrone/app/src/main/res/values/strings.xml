@@ -10,5 +10,6 @@
     <string name="bid">BID AMOUNT</string>
     <string name="timer">Time Left :</string>
     <string name="power">Powered By : </string>
-    <string name="cse">Dept. of Computer Science Engineering </string>
+    <string name="cse">Dept. of Computer Science Engineering, UCE OU(A)</string>
+    <string name="presents">Presents :</string>
 </resources>

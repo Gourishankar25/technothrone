@@ -34,6 +34,7 @@ public class questionPage extends AppCompatActivity {
     TextView balance;
     TextView currentPosition;
     EditText Bid;
+    Boolean Submitted;
     private RadioGroup mFirstGroup;
     private RadioGroup mSecondGroup;
 
@@ -52,7 +53,7 @@ public class questionPage extends AppCompatActivity {
         setContentView(R.layout.activity_question_page);
         androidx.appcompat.app.ActionBar appBar = getSupportActionBar();
         appBar.hide();
-
+        Submitted=false;
         teamNumber=getIntent().getExtras().getString("teamNo");
         quetion=findViewById(R.id.question);
 
@@ -103,20 +104,26 @@ public class questionPage extends AppCompatActivity {
             public void onClick(View v) {
                 final RadioButton btn = findViewById(selected);
 
-                if(btn==null)
-                {
-                    Toast.makeText(questionPage.this,"Please select an option",Toast.LENGTH_SHORT).show();
+                if (Balance > 0 ) {
+
+                    if (btn == null) {
+                        Toast.makeText(questionPage.this, "Please select an option", Toast.LENGTH_SHORT).show();
+                    } else if (Bid.getText().toString().equals("")) {
+                        Toast.makeText(questionPage.this, "Please select the bid amount", Toast.LENGTH_SHORT).show();
+                    } else {
+                        if(!Submitted) {
+                            Option = btn.getText().toString();
+                            String bidamt = Bid.getText().toString();
+                            bidAmnt = Integer.valueOf(bidamt);
+                            bid();
+                        }
+                        else{
+                            Toast.makeText(questionPage.this, "Question can nly b submitted once", Toast.LENGTH_SHORT).show();
+                        }
+                    }
                 }
-                else if(Bid == null)
-                {
-                    Toast.makeText(questionPage.this,"Please select the bid amount",Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    Option = btn.getText().toString();
-                    String bidamt = Bid.getText().toString();
-                    bidAmnt = Integer.valueOf(bidamt);
-                    bid();
+                else{
+                    Toast.makeText(questionPage.this, "Your Balance is exhausted", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -220,6 +227,7 @@ public class questionPage extends AppCompatActivity {
     void bid()
     {
         Balance  = Balance - bidAmnt;
+        Submitted=true;
         loadBalancePosition(Balance,Position);
         Toast.makeText(questionPage.this,"Option Selected is:"+Option+" The bid Amount is:"+bidAmnt,Toast.LENGTH_SHORT).show();
     }

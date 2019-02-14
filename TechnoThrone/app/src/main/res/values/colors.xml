@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimary">#04569A</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="bg">#E8EAF6</color>
     <color name="colorAccent">#EC4D37</color>
-    <color name="submit">#e6f50808</color>
+    <color name="submit">#04569A</color>
 
     <color name="qbg">#ffa726</color>
     <color name="bidbg">#161b21</color>
+
     <color name="fotor">#004d40</color>
     <color name="btn">#4fc3f7</color>
     <color name="white">#ffffff</color>
