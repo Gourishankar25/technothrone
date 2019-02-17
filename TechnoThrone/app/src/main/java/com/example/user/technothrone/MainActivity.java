@@ -39,21 +39,21 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                teamNo = teamNumber.getText().toString();
+                try {
+                    teamNo = teamNumber.getText().toString();
                /* if (!teamNo.equals("01")) {
                     teamNumber.setError("your kingdom cannot combat with our soliders");
                     teamNumber.requestFocus();
                     return;
                 } else {*/
 
-                    check=FirebaseDatabase.getInstance().getReference().child("user").child(teamNo).child("status");
+                    check = FirebaseDatabase.getInstance().getReference().child("user").child(teamNo).child("status");
 
                     check.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            String s=dataSnapshot.getValue().toString();
-                            if (s.equals("false"))
-                            {
+                            String s = dataSnapshot.getValue().toString();
+                            if (s.equals("false")) {
                                 teamPasswords = FirebaseDatabase.getInstance().getReference().child("user").child(teamNo).child("password");
                                 teamPasswords.addValueEventListener(new ValueEventListener() {
                                     @Override
@@ -64,9 +64,9 @@ public class MainActivity extends AppCompatActivity {
                                         if (passWord.equals(pass)) {
 
                                             Toast.makeText(MainActivity.this, "my lord tech throne kingdom invites you", Toast.LENGTH_SHORT).show();
-                                           // check.setValue("true");
-                                            Intent i =new Intent(MainActivity.this,questionPage.class);
-                                            i.putExtra("teamNo",teamNo);
+                                            // check.setValue("true");
+                                            Intent i = new Intent(MainActivity.this, questionPage.class);
+                                            i.putExtra("teamNo", teamNo);
                                             startActivity(i);
 
                                         } else {
@@ -81,8 +81,7 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                 });
 
-                            }
-                            else {
+                            } else {
                                 teamNumber.setError("allready some person from your kingdom entered");
                                 teamNumber.requestFocus();
                                 return;
@@ -97,6 +96,13 @@ public class MainActivity extends AppCompatActivity {
 
 
                 }
+                catch (Exception e)
+                {
+                    teamNumber.setError("sorry you are not invited to battle ground");
+                    teamNumber.requestFocus();
+                    return;
+                }
+            }
 
         });
 

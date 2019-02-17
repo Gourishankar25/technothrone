@@ -26,6 +26,10 @@ public class questionPage extends AppCompatActivity {
     DatabaseReference displayB;
     DatabaseReference displayC;
     DatabaseReference displayD;
+    DatabaseReference answer;
+    DatabaseReference pot;
+    DatabaseReference balanceofteam;
+    DatabaseReference positionofteam;
     TextView quetion;
     TextView optionA;
     TextView optionB;
@@ -34,12 +38,13 @@ public class questionPage extends AppCompatActivity {
     TextView balance;
     TextView currentPosition;
     EditText Bid;
-    Boolean Submitted;
     private RadioGroup mFirstGroup;
     private RadioGroup mSecondGroup;
+    Boolean submitedans;
+    String qNo;
 
-    int Balance = 3000;
-    int Position = 1;
+    int Balance;
+    int Position;
 
     String Option ="";
     int selected = 0;
@@ -53,7 +58,7 @@ public class questionPage extends AppCompatActivity {
         setContentView(R.layout.activity_question_page);
         androidx.appcompat.app.ActionBar appBar = getSupportActionBar();
         appBar.hide();
-        Submitted=false;
+
         teamNumber=getIntent().getExtras().getString("teamNo");
         quetion=findViewById(R.id.question);
 
@@ -62,14 +67,42 @@ public class questionPage extends AppCompatActivity {
         optionC=findViewById(R.id.optionc);
         optionD=findViewById(R.id.optiond);
         Bid = findViewById(R.id.bidamt);
-
+        submitedans=false;
         balance = findViewById(R.id.balance);
         currentPosition = findViewById(R.id.position);
 
         mFirstGroup = (RadioGroup) findViewById(R.id.opt1);
         mSecondGroup = (RadioGroup) findViewById(R.id.opt2);
+        balanceofteam=FirebaseDatabase.getInstance().getReference().child("user").child(teamNumber).child("balance");
+        balanceofteam.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Balance=Integer.valueOf(dataSnapshot.getValue().toString());
 
-        loadBalancePosition(Balance,Position);
+                loadBalancePosition(Balance,Position);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        positionofteam=FirebaseDatabase.getInstance().getReference().child("user").child(teamNumber).child("position");
+        positionofteam.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Position=Integer.valueOf(dataSnapshot.getValue().toString());
+                loadBalancePosition(Balance,Position);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        // loading balance and position in app
+       // loadBalancePosition(Balance,Position);
 
         mFirstGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -99,31 +132,35 @@ public class questionPage extends AppCompatActivity {
 
 
         Button submit = (Button) findViewById(R.id.submit);
+        // when submit button is clicked
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final RadioButton btn = findViewById(selected);
 
-                if (Balance > 0 ) {
-
-                    if (btn == null) {
-                        Toast.makeText(questionPage.this, "Please select an option", Toast.LENGTH_SHORT).show();
-                    } else if (Bid.getText().toString().equals("")) {
+                if(btn==null)
+                {
+                    // btn is null if no option is selected and gives toast
+                    Toast.makeText(questionPage.this,"Please select an option",Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    String bidamt = Bid.getText().toString();
+                    if (bidamt.equals("")) {
+                        // bid is null if bid amount is null
                         Toast.makeText(questionPage.this, "Please select the bid amount", Toast.LENGTH_SHORT).show();
                     } else {
-                        if(!Submitted) {
+                        if (submitedans == false) {
+                            //String bidamt = Bid.getText().toString();
+                           // Toast.makeText(questionPage.this, "value of bidamt"+bidamt, Toast.LENGTH_SHORT).show();
                             Option = btn.getText().toString();
-                            String bidamt = Bid.getText().toString();
+                           // String bidamt = Bid.getText().toString();
                             bidAmnt = Integer.valueOf(bidamt);
+                            submitedans = true;
                             bid();
-                        }
-                        else{
-                            Toast.makeText(questionPage.this, "Question can nly b submitted once", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(questionPage.this, "you already has choosen option", Toast.LENGTH_SHORT).show();
                         }
                     }
-                }
-                else{
-                    Toast.makeText(questionPage.this, "Your Balance is exhausted", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -132,13 +169,17 @@ public class questionPage extends AppCompatActivity {
     displayAns.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String qNo = dataSnapshot.getValue().toString();
+                qNo = dataSnapshot.getValue().toString();
                 if (qNo.equals("null"))
                 {
+                    // when database display value is null
                     quetion.setText("battle ground is preparing");
                 }
                 else
                 {
+                    // database value is not equal to null and equal to some question number
+                    Bid.setText("");
+                    submitedans=false;
                    displayQuestion=FirebaseDatabase.getInstance().getReference().child("questions").child(qNo).child("q");
                    displayQuestion.addValueEventListener(new ValueEventListener() {
                        @Override
@@ -152,7 +193,7 @@ public class questionPage extends AppCompatActivity {
 
                        }
                    });
-
+                    // displaying option a
                    displayA=FirebaseDatabase.getInstance().getReference().child("questions").child(qNo).child("a");
                    displayA.addValueEventListener(new ValueEventListener() {
                        @Override
@@ -166,7 +207,7 @@ public class questionPage extends AppCompatActivity {
 
                        }
                    });
-
+                        // displaying option b
                     displayB=FirebaseDatabase.getInstance().getReference().child("questions").child(qNo).child("b");
                     displayB.addValueEventListener(new ValueEventListener() {
                         @Override
@@ -182,7 +223,7 @@ public class questionPage extends AppCompatActivity {
 
                         }
                     });
-
+                        //displaying option c
                     displayC=FirebaseDatabase.getInstance().getReference().child("questions").child(qNo).child("c");
                     displayC.addValueEventListener(new ValueEventListener() {
                         @Override
@@ -197,6 +238,7 @@ public class questionPage extends AppCompatActivity {
 
                         }
                     });
+                    //displaying option d
                     displayD=FirebaseDatabase.getInstance().getReference().child("questions").child(qNo).child("d");
                     displayD.addValueEventListener(new ValueEventListener() {
                         @Override
@@ -227,9 +269,35 @@ public class questionPage extends AppCompatActivity {
     void bid()
     {
         Balance  = Balance - bidAmnt;
-        Submitted=true;
-        loadBalancePosition(Balance,Position);
-        Toast.makeText(questionPage.this,"Option Selected is:"+Option+" The bid Amount is:"+bidAmnt,Toast.LENGTH_SHORT).show();
+        balanceofteam=FirebaseDatabase.getInstance().getReference().child("user").child(teamNumber).child("balance");
+        balanceofteam.setValue(Balance);
+        //loadBalancePosition(Balance,Position);
+        answer=FirebaseDatabase.getInstance().getReference().child("questions").child(qNo).child("ans");
+        answer.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String cans= dataSnapshot.getValue().toString();
+                if(Option.equals(cans))
+                {
+                    Toast.makeText(questionPage.this,"Option Selected is right:"+Option+" The bid Amount is:"+bidAmnt,Toast.LENGTH_SHORT).show();
+                    pot=FirebaseDatabase.getInstance().getReference().child("pot").child(teamNumber);
+                    pot.setValue(bidAmnt);
+                }
+                else
+                {
+                    Toast.makeText(questionPage.this,"Option Selected is wrong:"+Option+" The bid Amount is:"+bidAmnt,Toast.LENGTH_SHORT).show();
+                    pot=FirebaseDatabase.getInstance().getReference().child("pot").child(teamNumber);
+                    pot.setValue(-1*bidAmnt);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+       // Toast.makeText(questionPage.this,"Option Selected is:"+Option+" The bid Amount is:"+bidAmnt,Toast.LENGTH_SHORT).show();
     }
 
     void loadBalancePosition(int bal,int pos)
