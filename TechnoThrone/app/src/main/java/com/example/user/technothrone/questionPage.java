@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Path;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -42,7 +43,8 @@ public class questionPage extends AppCompatActivity {
     private RadioGroup mSecondGroup;
     Boolean submitedans;
     String qNo;
-
+    int flag=0;
+    TextView mTimer;
     int Balance;
     int Position;
 
@@ -130,6 +132,18 @@ public class questionPage extends AppCompatActivity {
             }
         });
 
+        mTimer = (TextView) findViewById(R.id.time);
+        CountDownTimer Timer = new CountDownTimer(30000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                mTimer.setText((millisUntilFinished / 1000 )+" s");
+            }
+
+            public void onFinish() {
+                mTimer.setText("Time Up!!");
+                submitedans = true;
+            }
+        }.start();
 
         Button submit = (Button) findViewById(R.id.submit);
         // when submit button is clicked
@@ -158,7 +172,7 @@ public class questionPage extends AppCompatActivity {
                             submitedans = true;
                             bid();
                         } else {
-                            Toast.makeText(questionPage.this, "you already has choosen option", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(questionPage.this, "you already have choosen option", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }

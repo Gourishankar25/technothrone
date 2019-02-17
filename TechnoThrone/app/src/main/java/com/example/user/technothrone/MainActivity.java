@@ -4,9 +4,11 @@ import android.content.Intent;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -38,8 +40,6 @@ public class MainActivity extends AppCompatActivity {
         enterTeam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                try {
                     teamNo = teamNumber.getText().toString();
                /* if (!teamNo.equals("01")) {
                     teamNumber.setError("your kingdom cannot combat with our soliders");
@@ -52,61 +52,49 @@ public class MainActivity extends AppCompatActivity {
                     check.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            String s = dataSnapshot.getValue().toString();
-                            if (s.equals("false")) {
-                                teamPasswords = FirebaseDatabase.getInstance().getReference().child("user").child(teamNo).child("password");
-                                teamPasswords.addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                        String passWord = dataSnapshot.getValue().toString();
-                                        pass = teamPassword.getText().toString().trim();
-                                        // Toast.makeText(MainActivity.this,pass,Toast.LENGTH_SHORT).show();
-                                        if (passWord.equals(pass)) {
+                            String s="";
+                                try {
+                                    s = dataSnapshot.getValue().toString();
+                                }
+                                catch (Exception e) {
+                                    Toast.makeText(MainActivity.this, "my lord insert correct Team Number or Key", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                                if (s.equals("false")) {
+                                    teamPasswords = FirebaseDatabase.getInstance().getReference().child("user").child(teamNo).child("password");
+                                    teamPasswords.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            String passWord = dataSnapshot.getValue().toString();
+                                            pass = teamPassword.getText().toString().trim();
+                                            // Toast.makeText(MainActivity.this,pass,Toast.LENGTH_SHORT).show();
+                                            if (passWord.equals(pass)) {
 
-                                            Toast.makeText(MainActivity.this, "my lord tech throne kingdom invites you", Toast.LENGTH_SHORT).show();
-                                            // check.setValue("true");
-                                            Intent i = new Intent(MainActivity.this, questionPage.class);
-                                            i.putExtra("teamNo", teamNo);
-                                            startActivity(i);
-
-                                        } else {
-                                            Toast.makeText(MainActivity.this, "my lord insert correct key", Toast.LENGTH_SHORT).show();
-                                            return;
+                                                Toast.makeText(MainActivity.this, "my lord tech throne kingdom invites you", Toast.LENGTH_SHORT).show();
+                                                // check.setValue("true");
+                                                Intent i = new Intent(MainActivity.this, questionPage.class);
+                                                i.putExtra("teamNo", teamNo);
+                                                startActivity(i);
+                                            } else {
+                                                Toast.makeText(MainActivity.this, "my lord insert correct key", Toast.LENGTH_SHORT).show();
+                                               // return;
+                                            }
                                         }
-                                    }
-
                                     @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-
-                                    }
+                                    public void onCancelled(DatabaseError databaseError) { }
                                 });
-
-                            } else {
+                            }else
+                                 {
                                 teamNumber.setError("allready some person from your kingdom entered");
                                 teamNumber.requestFocus();
-                                return;
+                                //return;
                             }
                         }
 
                         @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
+                        public void onCancelled(DatabaseError databaseError) { }
                     });
-
-
                 }
-                catch (Exception e)
-                {
-                    teamNumber.setError("sorry you are not invited to battle ground");
-                    teamNumber.requestFocus();
-                    return;
-                }
-            }
-
         });
-
-
     }
-
 }

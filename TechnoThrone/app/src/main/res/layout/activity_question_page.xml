@@ -107,7 +107,8 @@
                 android:textSize="20sp"
                 android:padding="8dp"
                 android:textColor="#000"
-                tools:text="60 sec"/>
+                android:text="60s"
+                />
 
         </LinearLayout>
 
