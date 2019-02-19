@@ -132,18 +132,7 @@ public class questionPage extends AppCompatActivity {
             }
         });
 
-        mTimer = (TextView) findViewById(R.id.time);
-        CountDownTimer Timer = new CountDownTimer(30000, 1000) {
 
-            public void onTick(long millisUntilFinished) {
-                mTimer.setText((millisUntilFinished / 1000 )+" s");
-            }
-
-            public void onFinish() {
-                mTimer.setText("Time Up!!");
-                submitedans = true;
-            }
-        }.start();
 
         Button submit = (Button) findViewById(R.id.submit);
         // when submit button is clicked
@@ -169,8 +158,13 @@ public class questionPage extends AppCompatActivity {
                             Option = btn.getText().toString();
                            // String bidamt = Bid.getText().toString();
                             bidAmnt = Integer.valueOf(bidamt);
-                            submitedans = true;
-                            bid();
+                            if(bidAmnt>0) {
+                                submitedans = true;
+                                bid();
+                            }
+                            else{
+                                Toast.makeText(questionPage.this, "sorry you should bid minimum bid amount", Toast.LENGTH_SHORT).show();
+                            }
                         } else {
                             Toast.makeText(questionPage.this, "you already have choosen option", Toast.LENGTH_SHORT).show();
                         }
@@ -200,6 +194,18 @@ public class questionPage extends AppCompatActivity {
                        public void onDataChange(DataSnapshot dataSnapshot) {
                            String q = dataSnapshot.getValue().toString();
                            quetion.setText(q);
+                           mTimer = (TextView) findViewById(R.id.time);
+                           CountDownTimer Timer = new CountDownTimer(30000, 1000) {
+
+                               public void onTick(long millisUntilFinished) {
+                                   mTimer.setText((millisUntilFinished / 1000 )+" s");
+                               }
+
+                               public void onFinish() {
+                                   mTimer.setText("Time Up!!");
+                                   submitedans = true;
+                               }
+                           }.start();
                        }
 
                        @Override
@@ -283,35 +289,39 @@ public class questionPage extends AppCompatActivity {
     void bid()
     {
         Balance  = Balance - bidAmnt;
-        balanceofteam=FirebaseDatabase.getInstance().getReference().child("user").child(teamNumber).child("balance");
-        balanceofteam.setValue(Balance);
-        //loadBalancePosition(Balance,Position);
-        answer=FirebaseDatabase.getInstance().getReference().child("questions").child(qNo).child("ans");
-        answer.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String cans= dataSnapshot.getValue().toString();
-                if(Option.equals(cans))
-                {
-                    Toast.makeText(questionPage.this,"Option Selected is right:"+Option+" The bid Amount is:"+bidAmnt,Toast.LENGTH_SHORT).show();
-                    pot=FirebaseDatabase.getInstance().getReference().child("pot").child(teamNumber);
-                    pot.setValue(bidAmnt);
+        if(Balance<0){
+            submitedans=false;
+            Toast.makeText(questionPage.this, "sorry you are out of balance"+Balance, Toast.LENGTH_SHORT).show();
+            Balance=Balance+bidAmnt;
+        }
+        else {
+            balanceofteam = FirebaseDatabase.getInstance().getReference().child("user").child(teamNumber).child("balance");
+            balanceofteam.setValue(Balance);
+            //loadBalancePosition(Balance,Position);
+            answer = FirebaseDatabase.getInstance().getReference().child("questions").child(qNo).child("ans");
+            answer.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String cans = dataSnapshot.getValue().toString();
+                    if (Option.equals(cans)) {
+                        Toast.makeText(questionPage.this, "Option Selected is right:" + Option + " The bid Amount is:" + bidAmnt, Toast.LENGTH_SHORT).show();
+                        pot = FirebaseDatabase.getInstance().getReference().child("pot").child(teamNumber);
+                        pot.setValue(bidAmnt);
+                    } else {
+                        Toast.makeText(questionPage.this, "Option Selected is wrong:" + Option + " The bid Amount is:" + bidAmnt, Toast.LENGTH_SHORT).show();
+                        pot = FirebaseDatabase.getInstance().getReference().child("pot").child(teamNumber);
+                        pot.setValue(-1 * bidAmnt);
+                    }
+
                 }
-                else
-                {
-                    Toast.makeText(questionPage.this,"Option Selected is wrong:"+Option+" The bid Amount is:"+bidAmnt,Toast.LENGTH_SHORT).show();
-                    pot=FirebaseDatabase.getInstance().getReference().child("pot").child(teamNumber);
-                    pot.setValue(-1*bidAmnt);
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
                 }
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-       // Toast.makeText(questionPage.this,"Option Selected is:"+Option+" The bid Amount is:"+bidAmnt,Toast.LENGTH_SHORT).show();
+            });
+            // Toast.makeText(questionPage.this,"Option Selected is:"+Option+" The bid Amount is:"+bidAmnt,Toast.LENGTH_SHORT).show();
+        }
     }
 
     void loadBalancePosition(int bal,int pos)
