@@ -25,6 +25,9 @@ public class AdminPage extends AppCompatActivity {
     EditText qno;
     DatabaseReference pot;
     DatabaseReference winner;
+    Boolean check;
+    Boolean push;
+
     long c;
    // ArrayList<String> amnt = new ArrayList<>();
     long tot;
@@ -46,8 +49,7 @@ public class AdminPage extends AppCompatActivity {
     }
 
     public void evaluatePot(View v) {
-      //  Toast.makeText(AdminPage.this,"fassak gouri",Toast.LENGTH_SHORT).show();
-
+        tot=0;
        pot = FirebaseDatabase.getInstance().getReference().child("pot");
         pot.addChildEventListener(new ChildEventListener() {
             @Override
@@ -64,7 +66,7 @@ public class AdminPage extends AppCompatActivity {
                     pot.child("Total").setValue(tot);
                 }
                 //amnt.add(dataSnapshot.getValue().toString());
-            }
+                }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
@@ -86,7 +88,10 @@ public class AdminPage extends AppCompatActivity {
 
             }
         });
-        tot=0;
+        //Toast.makeText(AdminPage.this,"pot amount: "+tot ,Toast.LENGTH_SHORT).show();
+
+        //tot=0;
+
 
 
 
@@ -102,47 +107,41 @@ public class AdminPage extends AppCompatActivity {
             }
             total+= a;
         } */
-
-
     }
     public void addamount(View view)
     {
-        if(!maxi.equals(""))
-        {
-            winner=FirebaseDatabase.getInstance().getReference().child("user").child(maxi).child("balance");
-            winner.addChildEventListener(new ChildEventListener() {
-                @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    String a=dataSnapshot.getValue().toString();
-                    c=Integer.valueOf(a);
-                    c+=tot;
-                    winner.setValue(c);
+        check=false;
 
-                }
 
-                @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+        //Toast.makeText(AdminPage.this,"winner"+maxi,Toast.LENGTH_SHORT).show();
 
-                }
+        winner=FirebaseDatabase.getInstance().getReference().child("user").child(maxi).child("balance");
+        winner.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(!check)
+                    {
+                        Log.i("abc", "addamount ,,, winner is : "+maxi);
 
-                @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {
+                        String s=dataSnapshot.getValue().toString();
+                        Log.i("abc", "addamount ,,, winner is :"+dataSnapshot.getValue());
+                        Log.i("abc", "onDataChange: "+s);
+                        c=Integer.valueOf(s);
+                        c= c + tot;
+                        Log.i("abc", "onDataChange c is: "+c);
+                        check=true;
 
-                }
+                        winner.setValue(c);
+                    }
+            }
 
-                @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
-                }
+            }
+        });
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
 
-                }
-            });
-        }
         maxi="";
     }
-
-
 }
