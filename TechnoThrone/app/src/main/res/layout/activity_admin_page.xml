@@ -29,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="PUSH QUESTION"
-        android:layout_margin="42dp"
+        android:layout_margin="22dp"
         android:padding="16dp"
         android:textSize="28sp"
         android:onClick="pushQuestion"/>
@@ -39,9 +39,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="EVALUATE"
-        android:layout_margin="42dp"
+        android:layout_margin="22dp"
         android:textSize="28sp"
         android:padding="16dp"
         android:onClick="evaluatePot"
+        />
+    <Button
+        android:id="@+id/evals"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="update balance"
+        android:layout_margin="22dp"
+        android:textSize="28sp"
+        android:padding="16dp"
+        android:onClick="addamount"
         />
 </LinearLayout>
