@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AdminPage"
+    android:orientation="vertical"
+>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:paddingTop="72dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/qno"
+            android:layout_margin="24dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Next Question Number"
+            android:textSize="24sp"
+            android:inputType="number"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/qpush"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="PUSH QUESTION"
+        android:layout_margin="42dp"
+        android:padding="16dp"
+        android:textSize="28sp"
+        android:onClick="pushQuestion"/>
+
+    <Button
+        android:id="@+id/eval"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="EVALUATE"
+        android:layout_margin="42dp"
+        android:textSize="28sp"
+        android:padding="16dp"
+        android:onClick="evaluatePot"
+        />
+</LinearLayout>

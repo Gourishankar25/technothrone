@@ -136,7 +136,8 @@ public class questionPage extends AppCompatActivity {
         CountDownTimer Timer = new CountDownTimer(30000, 1000) {
 
             public void onTick(long millisUntilFinished) {
-                mTimer.setText((millisUntilFinished / 1000 )+" s");
+                String s= (millisUntilFinished / 1000 )+" s";
+                mTimer.setText(s);
             }
 
             public void onFinish() {
