@@ -16,8 +16,30 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import static java.lang.Math.abs;
+
+class teamBalance
+{
+    String team;
+    int balance;
+
+    public teamBalance(String t,int b)
+    {
+        team = t;
+        balance =b;
+    }
+}
+
+class SortByBalance implements Comparator<teamBalance>
+{
+    public int compare(teamBalance a,teamBalance b)
+    {
+        return (a.balance - b.balance);
+    }
+}
 
 public class AdminPage extends AppCompatActivity {
 
@@ -25,14 +47,16 @@ public class AdminPage extends AppCompatActivity {
     EditText qno;
     DatabaseReference pot;
     DatabaseReference winner;
+    DatabaseReference currentBalance;
     Boolean check;
-    Boolean push;
 
-    long c;
-   // ArrayList<String> amnt = new ArrayList<>();
-    long tot;
+    ArrayList<teamBalance> arr = new ArrayList<>();
+    int i=0;
+    int c;
+    int tot;
     String maxi = "";
-     long max = -9999;
+    int max = -9999;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,14 +73,49 @@ public class AdminPage extends AppCompatActivity {
     }
 
     public void evaluatePot(View v) {
+        i=0;
+
+        currentBalance = FirebaseDatabase.getInstance().getReference().child("user");
+        currentBalance.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                String str = dataSnapshot.getKey();
+                int bal = Integer.valueOf(dataSnapshot.child("balance").getValue().toString());
+                Log.i("abc", "onChildAdded: "+str+" bal:"+bal);
+                arr.add(new teamBalance(str,bal));
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
         tot=0;
+
        pot = FirebaseDatabase.getInstance().getReference().child("pot");
         pot.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 if(!dataSnapshot.getKey().equals("Total"))
                 {
-                    long t = Integer.valueOf(dataSnapshot.getValue().toString());
+                    int t = Integer.valueOf(dataSnapshot.getValue().toString());
                     if(max<t)
                     {
                         max = t;
@@ -88,26 +147,9 @@ public class AdminPage extends AppCompatActivity {
 
             }
         });
-        //Toast.makeText(AdminPage.this,"pot amount: "+tot ,Toast.LENGTH_SHORT).show();
 
-        //tot=0;
-
-
-
-
-       /* long total =0;
-        long max = 0;
-
-        for(int i=0;i<amnt.size();i++)
-        {
-            long a= Integer.getInteger(amnt.get(i));
-            if(max<a)
-            {
-                max = i;
-            }
-            total+= a;
-        } */
     }
+
     public void addamount(View view)
     {
         check=false;
@@ -141,6 +183,13 @@ public class AdminPage extends AppCompatActivity {
             }
         });
 
+        Collections.sort(arr,new SortByBalance());
+
+         for(int i=0;i<10;i++)
+         {
+             currentBalance = FirebaseDatabase.getInstance().getReference().child("user");
+             currentBalance.child(arr.get(i).team).child("position").setValue(10-i);
+         }
 
         maxi="";
     }
