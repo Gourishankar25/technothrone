@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    tools:context="com.example.user.technothrone.MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:paddingTop="28dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:text="@string/infinity"
+            android:textAllCaps="true"
+            android:textColor="#000"/>
+
+       <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="12dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/crown" />
+
+        <com.google.android.material.textfield.TextInputLayout
+           android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/teamnumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20sp"
+            android:hint="@string/team_num"
+            android:inputType="number"
+            android:maxLength="2"
+            android:textSize="22sp"
+            android:fontFamily="serif-monospace"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            >
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/teamPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="12sp"
+            android:fontFamily="serif-monospace"
+            android:hint="@string/passwd"
+            android:textSize="22sp"
+            android:inputType="textPassword"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/enterbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="48sp"
+            android:background="@color/submit"
+            android:fontFamily="casual"
+            android:text="@string/submit"
+            android:textAlignment="center"
+            android:textColor="#fff"
+            android:includeFontPadding="true"
+            android:shadowColor="#FF7043"
+            android:textStyle="bold"
+            android:textSize="18dp"/>
+
+    </LinearLayout>
+</ScrollView>
